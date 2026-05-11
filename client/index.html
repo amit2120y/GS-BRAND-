@@ -9,13 +9,13 @@
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;900&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link rel="stylesheet" href="/client/styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=2" />
 </head>
 
 <body>
   <!-- NAV -->
   <nav id="main-nav">
-    <div class="logo" onclick="goHome()" style="display: flex; align-items: center; gap: 12px">
+    <div class="logo" onclick="goHome()" style="display: flex; align-items: center; gap: 12px; white-space: nowrap;">
       <img src="images/logo.png" alt="GS Brand" style="
             height: 50px;
             width: 50px;
@@ -25,6 +25,10 @@
           " />
       GS BRAND
     </div>
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"
+      onclick="toggleNavMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </button>
     <div class="nav-links">
       <a onclick="goHome()">Home</a>
       <a onclick="showSection('shop-section')">Shop</a>
@@ -291,7 +295,8 @@
           <div class="developer-meta">Freelancer</div>
         </div>
         <img class="developer-photo" src="images/developer.png" alt="Developer" />
-        <a class="btn btn-outline btn-full mt-16" href="https://amit2120y.vercel.app/" target="_blank" rel="noopener">
+        <a class="btn btn-outline btn-full mt-16" href="https://amit2120y.github.io/Portfolio/" target="_blank"
+          rel="noopener">
           Visit Portfolio
         </a>
       </div>
@@ -415,7 +420,7 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script type="module" src="/client/script.js"></script>
+  <script type="module" src="./script.js?v=2"></script>
 </body>
 
 </html>

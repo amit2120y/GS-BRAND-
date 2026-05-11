@@ -9,7 +9,7 @@
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;900&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="/client/styles.css">
+  <link rel="stylesheet" href="./styles.css?v=3" />
 </head>
 
 <body>
@@ -17,11 +17,15 @@
   <!-- NAV -->
   <nav id="main-nav">
     <div class="logo" onclick="window.location.href='index.html'"
-      style="display: flex; align-items: center; gap: 12px;">
+      style="display: flex; align-items: center; gap: 12px; white-space: nowrap;">
       <img src="images/logo.png" alt="GS Brand"
         style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; display: block;">
       GS BRAND
     </div>
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"
+      onclick="toggleNavMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </button>
     <div class="nav-links">
       <button class="btn btn-outline btn-sm nav-theme-btn" id="theme-toggle-btn" onclick="toggleTheme()"
         aria-label="Switch theme">
@@ -226,7 +230,7 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script type="module" src="/client/script.js"></script>
+  <script type="module" src="./script.js?v=2"></script>
 </body>
 
 </html>

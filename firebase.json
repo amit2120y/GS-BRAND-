@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".",
+    "public": "client",
     "ignore": [
       "firebase.json",
       ".firebaserc",
@@ -9,7 +9,7 @@
       ".env.*"
     ],
     "rewrites": [
-      { "source": "**", "destination": "/client/index.html" }
+      { "source": "**", "destination": "/index.html" }
     ],
     "headers": [
       {

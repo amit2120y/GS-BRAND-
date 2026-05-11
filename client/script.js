@@ -6,7 +6,7 @@ import {
   getUserProfile,
   onAuthStateChanged,
   auth,
-} from "../server/firebase-auth.js";
+} from "./firebase/firebase-auth.js";
 import {
   loadProducts,
   saveProductToDB,
@@ -21,7 +21,7 @@ import {
   loadCart,
   saveCart,
   uploadProductImage,
-} from "../server/firebase-db.js";
+} from "./firebase/firebase-db.js";
 import imageCompression from "https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/+esm";
 
 const PRODUCT_IMGS = {
@@ -196,6 +196,36 @@ function fmtDate(d) {
     day: "2-digit",
     month: "short",
     year: "numeric",
+  });
+}
+
+function toggleNavMenu(forceOpen) {
+  const nav = document.getElementById("main-nav");
+  if (!nav) return;
+  const nextState = typeof forceOpen === "boolean" ? forceOpen : !nav.classList.contains("nav-open");
+  nav.classList.toggle("nav-open", nextState);
+  const toggle = nav.querySelector(".nav-toggle");
+  if (toggle) toggle.setAttribute("aria-expanded", String(nextState));
+}
+
+function setupNavMenu() {
+  const nav = document.getElementById("main-nav");
+  if (!nav) return;
+
+  document.addEventListener("click", (event) => {
+    if (!nav.classList.contains("nav-open")) return;
+    const toggle = nav.querySelector(".nav-toggle");
+    if (toggle && (toggle === event.target || toggle.contains(event.target))) return;
+    const links = nav.querySelector(".nav-links");
+    if (links && links.contains(event.target)) {
+      nav.classList.remove("nav-open");
+      return;
+    }
+    if (!nav.contains(event.target)) nav.classList.remove("nav-open");
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) nav.classList.remove("nav-open");
   });
 }
 
@@ -1322,6 +1352,7 @@ async function loadUserCart(uid) {
 
 // ===== INITIALIZATION =====
 initTheme();
+setupNavMenu();
 
 onAuthStateChanged(auth, async (user) => {
   const path = window.location.pathname;
@@ -1417,6 +1448,7 @@ Object.assign(window, {
   submitReview,
   startProfileEdit,
   toggleNewCategory,
+  toggleNavMenu,
   userTab,
   saveProfile,
 });
