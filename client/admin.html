@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | GS-Brand Sports</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/client/styles.css">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <div class="logo" onclick="window.location.href='index.html'"
+      style="display: flex; align-items: center; gap: 12px;">
+      <img src="images/logo.png" alt="GS Brand"
+        style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; display: block;">
+      GS BRAND
+    </div>
+    <div class="nav-links">
+      <button class="btn btn-outline btn-sm nav-theme-btn" id="theme-toggle-btn" onclick="toggleTheme()"
+        aria-label="Switch theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin-page" class="page active">
+    <div class="dashboard">
+      <div class="sidebar">
+        <span class="sidebar-label">Admin Panel</span>
+        <div class="sidebar-item active" onclick="adminTab('dashboard',this)" id="sa-dashboard">
+          <span class="sidebar-icon"><i class="fa-solid fa-chart-line"></i></span>Dashboard
+        </div>
+        <div class="sidebar-item" onclick="adminTab('products',this)" id="sa-products">
+          <span class="sidebar-icon"><i class="fa-solid fa-boxes-stacked"></i></span>Products
+        </div>
+        <div class="sidebar-item" onclick="adminTab('orders',this)" id="sa-orders">
+          <span class="sidebar-icon"><i class="fa-solid fa-receipt"></i></span>Orders
+        </div>
+        <div class="sidebar-item" onclick="adminTab('requests',this)" id="sa-requests">
+          <span class="sidebar-icon"><i class="fa-solid fa-comment-dots"></i></span>User Requests
+          <span id="req-badge" class="req-badge"></span>
+        </div>
+        <div class="sidebar-item" onclick="adminTab('profile',this)">
+          <span class="sidebar-icon"><i class="fa-solid fa-user-gear"></i></span>My Profile
+        </div>
+        <span class="sidebar-label">Account</span>
+        <div class="sidebar-item" onclick="logout()">
+          <span class="sidebar-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Logout
+        </div>
+      </div>
+      <div class="dash-content">
+        <!-- DASHBOARD TAB -->
+        <div id="admin-dashboard-tab">
+          <div class="dash-header">
+            <div class="dash-title">Dashboard Overview</div>
+            <div class="text-muted fs-13" id="admin-date"></div>
+          </div>
+          <div class="stat-cards" id="admin-stat-cards"></div>
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">Recent Orders</div>
+            </div>
+            <div class="admin-orders-grid" id="admin-recent-orders"></div>
+          </div>
+        </div>
+        <!-- PRODUCTS TAB -->
+        <div id="admin-products-tab" class="hidden">
+          <div class="dash-header">
+            <div class="dash-title">Product Management</div>
+            <button class="btn btn-gold" onclick="openAddProduct()">+ Add Product</button>
+          </div>
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">All Products</div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- ORDERS TAB -->
+        <div id="admin-orders-tab" class="hidden">
+          <div class="dash-header">
+            <div class="dash-title">All Orders</div>
+          </div>
+          <div class="table-wrap">
+            <div class="admin-orders-grid" id="admin-orders-table"></div>
+          </div>
+        </div>
+        <!-- REQUESTS TAB -->
+        <div id="admin-requests-tab" class="hidden">
+          <div class="dash-header">
+            <div class="dash-title">User Requests</div>
+          </div>
+          <div class="tabs">
+            <button class="tab active" onclick="reqTab('pending',this)">Pending</button>
+            <button class="tab" onclick="reqTab('approved',this)">Approved</button>
+            <button class="tab" onclick="reqTab('rejected',this)">Rejected</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Message</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-requests-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- PROFILE TAB -->
+        <div id="admin-profile-tab" class="hidden">
+          <div class="dash-header">
+            <div class="dash-title">My Profile</div>
+          </div>
+          <div class="table-wrap p-28" style="max-width: 600px;">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="profile-name" disabled>
+            </div>
+            <div class="form-group">
+              <label>Email Address (Cannot be changed)</label>
+              <input type="email" id="profile-email" disabled>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="profile-phone" placeholder="+91 98765 43210" disabled>
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <textarea id="profile-address" placeholder="Street, City, State, PIN" disabled></textarea>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn btn-outline" id="profile-edit-btn" onclick="startProfileEdit()">Update Profile</button>
+              <button class="btn btn-gold hidden" id="profile-save-btn" onclick="saveProfile()">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PRODUCT MODAL -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal modal-wide">
+      <button class="close-btn" onclick="closeProductModal()">×</button>
+      <h2 id="prod-modal-title">Add Product</h2>
+      <div class="mt-20">
+        <div class="input-row">
+          <div class="form-group"><label>Product Name</label><input type="text" id="prod-name"
+              placeholder="GS Pro Runner X1"></div>
+          <div class="form-group"><label>Category</label>
+            <select id="prod-cat" title="Select product category" onchange="toggleNewCategory()">
+              <option>Footwear</option>
+              <option>Cricket Products</option>
+              <option>Football Products</option>
+              <option>Basketball</option>
+              <option>Badminton</option>
+              <option>Indoor Game Products</option>
+              <option>Jersey</option>
+              <option>Trophy</option>
+              <option value="__new__">+ Add New Category</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group hidden" id="prod-new-cat-wrap">
+          <label>New Category</label>
+          <input type="text" id="prod-new-cat" placeholder="Enter new category" />
+        </div>
+        <div class="input-row">
+          <div class="form-group"><label>Price (₹)</label><input type="number" id="prod-price" placeholder="2999"></div>
+          <div class="form-group"><label>Original Price (₹)</label><input type="number" id="prod-orig-price"
+              placeholder="3999"></div>
+        </div>
+        <div class="input-row">
+          <div class="form-group"><label>Stock Qty</label><input type="number" id="prod-stock" placeholder="50"></div>
+          <div class="form-group"><label>Badge (optional)</label><input type="text" id="prod-badge"
+              placeholder="NEW, SALE, HOT..."></div>
+        </div>
+        <div class="form-group">
+          <label>Product Image</label>
+          <div id="img-upload-area"
+            style="border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:.2s;position:relative;"
+            onclick="document.getElementById('prod-img-file').click()">
+            <img id="img-preview" src="" alt=""
+              style="display:none;max-height:140px;max-width:100%;border-radius:6px;margin-bottom:8px;object-fit:contain;">
+            <div id="img-placeholder" style="color:var(--muted);font-size:13px;">
+              <i class="fa-solid fa-cloud-arrow-up"
+                style="font-size:28px;margin-bottom:8px;display:block;color:var(--gold)"></i>
+              Click to upload image
+            </div>
+            <input type="file" id="prod-img-file" accept="image/*" style="display:none"
+              onchange="previewProductImage(this)">
+          </div>
+        </div>
+        <div id="prod-error" class="text-red fs-13 mb-12 hidden"></div>
+        <button class="btn btn-gold btn-full btn-pad-14" onclick="saveProduct()">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="/client/script.js"></script>
+</body>
+
+</html>

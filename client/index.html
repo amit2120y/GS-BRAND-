@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GS-Brand Sports</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="/client/styles.css" />
+</head>
+
+<body>
+  <!-- NAV -->
+  <nav id="main-nav">
+    <div class="logo" onclick="goHome()" style="display: flex; align-items: center; gap: 12px">
+      <img src="images/logo.png" alt="GS Brand" style="
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+          " />
+      GS BRAND
+    </div>
+    <div class="nav-links">
+      <a onclick="goHome()">Home</a>
+      <a onclick="showSection('shop-section')">Shop</a>
+      <a onclick="showSection('about-section')">About</a>
+      <button class="btn btn-outline btn-sm nav-theme-btn" id="theme-toggle-btn" onclick="toggleTheme()"
+        aria-label="Switch theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <div id="nav-user-area">
+        <a onclick="openLoginModal()" id="login-link">Login</a>
+        <button class="btn btn-gold btn-sm" onclick="openLoginModal()">
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGES -->
+
+  <!-- HOME PAGE -->
+  <div id="home-page" class="page active">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-pattern"></div>
+      <div class="hero-content">
+        <div class="hero-badge fade-up">New Collection 2025</div>
+        <h1 class="hero-title fade-up-2">
+          ELEVATE<br />YOUR <span>GAME</span>
+        </h1>
+        <p class="hero-sub fade-up-3">
+          Premium sportswear and gear for champions. Engineered for
+          performance, built for the streets.
+        </p>
+        <div class="hero-actions fade-up-4">
+          <button class="btn btn-gold" onclick="showSection('shop-section')">
+            Shop Now
+          </button>
+          <button class="btn btn-outline" onclick="showSection('about-section')">
+            Our Story
+          </button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-img-grid">
+          <div class="hero-img hi1"></div>
+          <div class="hero-img hi2"></div>
+          <div class="hero-img hi3"></div>
+          <div class="hero-img hi4"></div>
+        </div>
+      </div>
+      <div class="hero-scroll">
+        <div class="scroll-line"></div>
+        Scroll to explore
+      </div>
+    </div>
+
+    <!-- ALL PRODUCTS -->
+    <div class="section" id="shop-section">
+      <div class="flex justify-between items-center mb-24">
+        <div>
+          <div class="section-label" id="home-cat-label">All Products</div>
+          <h2 class="section-title no-mb">Our Collection</h2>
+        </div>
+        <div class="shop-controls">
+          <select id="home-cat-filter" class="select-control select-control-sm" title="Filter products by category"
+            onchange="renderHomeProducts()">
+            <option value="">All Categories</option>
+            <option>Footwear</option>
+            <option>Cricket Products</option>
+            <option>Football Products</option>
+            <option>Basketball</option>
+            <option>Badminton</option>
+            <option>Indoor Game Products</option>
+            <option>Jersey</option>
+            <option>Trophy</option>
+          </select>
+        </div>
+      </div>
+      <div class="products-grid" id="home-products"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-strip">
+      <div class="stat">
+        <div class="stat-num">12K+</div>
+        <div class="stat-label">Happy Customer</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">9</div>
+        <div class="stat-label">Years Strong</div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="section" id="about-section">
+      <div class="about-layout">
+        <div>
+          <div class="section-label">About GS-Brand</div>
+          <h2 class="section-title about-title">
+            Built For Champions,<br />Worn By Everyone
+          </h2>
+          <p class="about-copy about-copy-mb-20">
+            Founded in 2017, GS-Brand emerged from India's vibrant sports
+            culture. We believe every athlete — from streets to stadiums —
+            deserves elite gear without compromise.
+          </p>
+          <p class="about-copy about-copy-mb-32">
+            From cricket grounds to gym floors, our products are engineered to
+            perform where it matters most.
+          </p>
+          <div class="tag-row">
+            <div class="tag">Performance First</div>
+            <div class="tag">Made in India</div>
+            <div class="tag">Sustainable</div>
+          </div>
+        </div>
+        <div class="about-gallery">
+          <div class="about-tile about-tile-1"></div>
+          <div class="about-tile about-tile-2"></div>
+          <div class="about-tile about-tile-3"></div>
+          <div class="about-tile about-tile-4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">GS—BRAND</div>
+          <p class="footer-desc">
+            Premium sports equipment & apparel for athletes across India.
+            Elevate your game with gear that performs.
+          </p>
+        </div>
+        <div>
+          <div class="footer-title">Shop</div>
+          <ul class="footer-links">
+            <li><a onclick="filterCategory('Footwear')">Footwear</a></li>
+            <li><a onclick="filterCategory('Cricket Products')">Cricket Products</a></li>
+            <li><a onclick="filterCategory('Football Products')">Football Products</a></li>
+            <li><a onclick="filterCategory('Basketball')">Basketball</a></li>
+            <li><a onclick="filterCategory('Badminton')">Badminton</a></li>
+            <li><a onclick="filterCategory('Indoor Game Products')">Indoor Game Products</a></li>
+            <li><a onclick="filterCategory('Jersey')">Jersey</a></li>
+            <li><a onclick="filterCategory('Trophy')">Trophy</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-title">Company</div>
+          <ul class="footer-links">
+            <li><a onclick="showSection('about-section')">About Us</a></li>
+            <li><a onclick="comingSoon('Careers')">Careers</a></li>
+            <li><a onclick="comingSoon('Press')">Press</a></li>
+            <li><a onclick="comingSoon('Stores')">Stores</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-title">Support</div>
+          <ul class="footer-links">
+            <li><a onclick="comingSoon('Contact')">Contact</a></li>
+            <li><a onclick="comingSoon('Returns')">Returns</a></li>
+            <li><a onclick="comingSoon('Shipping')">Shipping</a></li>
+            <li><a onclick="comingSoon('FAQ')">FAQ</a></li>
+            <li><a onclick="openDeveloperModal()">Developer</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 GS-Brand Sports. All rights reserved.</span>
+        <span>Made with ❤️ in India</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop section removed (moved to home section above) -->
+
+  <!-- Admin Dashboard removed (moved to admin.html) -->
+
+  <!-- User Dashboard removed (moved to user.html) -->
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <button class="close-btn" onclick="closeLoginModal()">×</button>
+      <h2 class="mb-4">Welcome Back</h2>
+      <p class="text-muted fs-13 mb-20">Sign in to your GS-Brand account</p>
+
+      <button class="btn btn-google btn-full btn-pad-14" onclick="doGoogleLogin()">
+        <i class="fa-brands fa-google"></i> Continue with Google
+      </button>
+      <div class="divider-text"><span>or</span></div>
+
+      <div class="modal-tabs">
+        <button class="mtab active" onclick="switchAuthTab('login', this)">
+          Login
+        </button>
+        <button class="mtab" onclick="switchAuthTab('register', this)">
+          Register
+        </button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-form">
+        <div class="form-group">
+          <label>Email</label><input type="email" id="login-email" placeholder="amit@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label><input type="password" id="login-password" placeholder="••••••••" />
+        </div>
+        <div id="login-error" class="text-red fs-13 mb-12 hidden"></div>
+        <button class="btn btn-gold btn-full btn-pad-14" onclick="doLogin()">
+          Sign In
+        </button>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="register-form" class="hidden">
+        <div class="input-row">
+          <div class="form-group">
+            <label>First Name</label><input type="text" id="reg-fname" placeholder="Amit" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label><input type="text" id="reg-lname" placeholder="Thakur" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label><input type="email" id="reg-email" placeholder="amit@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label><input type="password" id="reg-password" placeholder="Min 6 chars" />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label><input type="tel" id="reg-phone" placeholder="+91 98765 43210" />
+        </div>
+        <div class="form-group">
+          <label>Address</label><textarea id="reg-address" placeholder="Street, City, State, PIN"></textarea>
+        </div>
+        <div id="reg-error" class="text-red fs-13 mb-12 hidden"></div>
+        <button class="btn btn-gold btn-full btn-pad-14" onclick="doRegister()">
+          Create Account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEVELOPER MODAL -->
+  <div class="modal-overlay" id="developer-modal">
+    <div class="modal developer-modal">
+      <button class="close-btn" onclick="closeDeveloperModal()">×</button>
+      <h2 class="mb-4">Developer</h2>
+      <p class="text-muted fs-13 mb-20">
+        Built and maintained by the developer behind GS-Brand Sports.
+      </p>
+      <div class="developer-card">
+        <div class="developer-info">
+          <div class="developer-name">Amit Kumar</div>
+          <div class="developer-role">Developer</div>
+          <div class="developer-meta">Freelancer</div>
+        </div>
+        <img class="developer-photo" src="images/developer.png" alt="Developer" />
+        <a class="btn btn-outline btn-full mt-16" href="https://amit2120y.vercel.app/" target="_blank" rel="noopener">
+          Visit Portfolio
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PRODUCT MODAL -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal modal-wide">
+      <button class="close-btn" onclick="closeProductModal()">×</button>
+      <h2 id="prod-modal-title">Add Product</h2>
+      <div class="mt-20">
+        <div class="input-row">
+          <div class="form-group">
+            <label>Product Name</label><input type="text" id="prod-name" placeholder="GS Pro Runner X1" />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="prod-cat" title="Select product category" onchange="toggleNewCategory()">
+              <option>Footwear</option>
+              <option>Cricket Products</option>
+              <option>Football Products</option>
+              <option>Basketball</option>
+              <option>Badminton</option>
+              <option>Indoor Game Products</option>
+              <option>Jersey</option>
+              <option>Trophy</option>
+              <option value="__new__">+ Add New Category</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group hidden" id="prod-new-cat-wrap">
+          <label>New Category</label>
+          <input type="text" id="prod-new-cat" placeholder="Enter new category" />
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label>Price (₹)</label><input type="number" id="prod-price" placeholder="2999" />
+          </div>
+          <div class="form-group">
+            <label>Original Price (₹)</label><input type="number" id="prod-orig-price" placeholder="3999" />
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label>Stock Qty</label><input type="number" id="prod-stock" placeholder="50" />
+          </div>
+          <div class="form-group">
+            <label>Badge (optional)</label><input type="text" id="prod-badge" placeholder="NEW, SALE, HOT..." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Image URL</label><input type="text" id="prod-img" placeholder="images/shoe1.jpg" />
+        </div>
+        <div id="prod-error" class="text-red fs-13 mb-12 hidden"></div>
+        <button class="btn btn-gold btn-full btn-pad-14" onclick="saveProduct()">
+          Save Product
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER DETAILS MODAL -->
+  <div class="modal-overlay" id="order-details-modal">
+    <div class="modal modal-wide">
+      <button class="close-btn" onclick="closeOrderDetails()">×</button>
+      <h2 class="mb-4">Order Details</h2>
+      <div id="order-details-content">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW & FEEDBACK MODAL -->
+  <div class="modal-overlay" id="review-modal">
+    <div class="modal">
+      <button class="close-btn" onclick="closeReviewModal()">×</button>
+      <h2 class="mb-4">Review & Feedback</h2>
+      <div class="mt-12">
+        <input type="hidden" id="review-order-id" />
+        <div class="form-group">
+          <label class="required">How was the product?</label>
+          <select id="review-prod-quality" required aria-required="true">
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Average</option>
+            <option>Poor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="required">How was the packing?</label>
+          <select id="review-pack-quality" required aria-required="true">
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Average</option>
+            <option>Poor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Rating</label>
+          <div class="review-stars" id="review-stars">
+            <i class="fa-regular fa-star star" data-value="1" onclick="setReviewRating(1)"></i>
+            <i class="fa-regular fa-star star" data-value="2" onclick="setReviewRating(2)"></i>
+            <i class="fa-regular fa-star star" data-value="3" onclick="setReviewRating(3)"></i>
+            <i class="fa-regular fa-star star" data-value="4" onclick="setReviewRating(4)"></i>
+            <i class="fa-regular fa-star star" data-value="5" onclick="setReviewRating(5)"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Write about product & services</label>
+          <textarea id="review-comment" placeholder="Share your experience..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn btn-outline" onclick="closeReviewModal()">Cancel</button>
+          <button class="btn btn-gold" onclick="submitReview()">Submit Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="/client/script.js"></script>
+</body>
+
+</html>
