@@ -5,9 +5,26 @@ import { firedb } from "./firebase-config.js";
 import { collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc } from "./firebase-config.js";
 
 // ===== CLOUDINARY UPLOAD =====
-const CLOUDINARY_CLOUD_NAME = "dqvu09ccf";
-const CLOUDINARY_API_KEY = "847719343331471";
-const CLOUDINARY_API_SECRET = "6o8fA1TOttpf_6LFZH0WmkIMSjU";
+const ENV =
+  (typeof window !== "undefined" && window.__ENV__ && typeof window.__ENV__ === "object")
+    ? window.__ENV__
+    : {};
+
+const CLOUDINARY_CLOUD_NAME =
+  (import.meta?.env?.VITE_CLOUDINARY_CLOUD_NAME ??
+    import.meta?.env?.CLOUDINARY_CLOUD_NAME ??
+    ENV.CLOUDINARY_CLOUD_NAME ??
+    "");
+const CLOUDINARY_API_KEY =
+  (import.meta?.env?.VITE_CLOUDINARY_API_KEY ??
+    import.meta?.env?.CLOUDINARY_API_KEY ??
+    ENV.CLOUDINARY_API_KEY ??
+    "");
+const CLOUDINARY_API_SECRET =
+  (import.meta?.env?.VITE_CLOUDINARY_API_SECRET ??
+    import.meta?.env?.CLOUDINARY_API_SECRET ??
+    ENV.CLOUDINARY_API_SECRET ??
+    "");
 
 async function generateCloudinarySignature(params, secret) {
   const sortedKeys = Object.keys(params).sort();
@@ -22,6 +39,9 @@ async function generateCloudinarySignature(params, secret) {
 }
 
 export async function uploadProductImage(file, onProgress) {
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+    throw new Error("Cloudinary config missing. Set CLOUDINARY_* env values.");
+  }
   const timestamp = Math.round(new Date().getTime() / 1000);
   const params = {
     timestamp: timestamp,
@@ -29,7 +49,7 @@ export async function uploadProductImage(file, onProgress) {
   };
 
   const signature = await generateCloudinarySignature(params, CLOUDINARY_API_SECRET);
-  
+
   const formData = new FormData();
   formData.append("file", file);
   formData.append("api_key", CLOUDINARY_API_KEY);

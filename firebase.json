@@ -4,7 +4,9 @@
     "ignore": [
       "firebase.json",
       ".firebaserc",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      ".env",
+      ".env.*"
     ],
     "rewrites": [
       { "source": "**", "destination": "/client/index.html" }
