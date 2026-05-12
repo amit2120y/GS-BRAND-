@@ -8,10 +8,39 @@ import {
     onAuthStateChanged,
     signInWithPopup,
     sendEmailVerification,
+    sendPasswordResetEmail,
 } from "./firebase-config.js";
 import { doc, getDoc, setDoc } from "./firebase-config.js";
 
 export { onAuthStateChanged, auth };
+
+export async function forgotPassword(toast) {
+    const email = document.getElementById("login-email").value.trim();
+    const err = document.getElementById("login-error");
+
+    if (!email) {
+        err.textContent = "Enter your email address to reset your password.";
+        err.style.color = "var(--red)";
+        err.style.display = "block";
+        return;
+    }
+
+    try {
+        await sendPasswordResetEmail(auth, email);
+        err.textContent = "Password reset email sent. Check your inbox.";
+        err.style.color = "var(--green)";
+        err.style.display = "block";
+        if (typeof toast === "function") toast("Password reset email sent");
+    } catch (e) {
+        err.textContent =
+            e.code === "auth/user-not-found"
+                ? "No account found for this email address."
+                : e.message;
+        err.style.color = "var(--red)";
+        err.style.display = "block";
+    }
+}
+
 export async function doLogin(toast) {
     const email = document.getElementById("login-email").value.trim();
     const pass = document.getElementById("login-password").value;

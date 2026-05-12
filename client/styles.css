@@ -838,7 +838,8 @@ nav {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-header {
@@ -858,6 +859,7 @@ nav {
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px; /* Ensures table doesn't get squished and enables horizontal scrolling on phones */
 }
 
 th {
@@ -869,6 +871,7 @@ th {
   color: var(--muted);
   background: var(--surface2);
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
 td {
@@ -1111,6 +1114,17 @@ tr:hover td {
   font-size: 14px;
 }
 
+.forgot-password-row {
+  text-align: right;
+  margin: -4px 0 14px;
+}
+
+.forgot-password-link {
+  font-size: 13px;
+  color: var(--red);
+  text-decoration: underline;
+}
+
 .btn-full {
   width: 100%;
 }
@@ -1289,6 +1303,13 @@ tr:hover td {
   border-radius: 6px;
   font-size: 12px;
 }
+.admin-order-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
 .admin-orders-empty {
   padding: 24px;
   color: var(--muted);
@@ -1372,7 +1393,7 @@ tr:hover td {
 }
 
 .about-tile-4 {
-  background-image: url("images/bat2.jpg");
+  background-image: url("images/bat4.jpeg");
 }
 
 .footer {

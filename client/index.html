@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GS-Brand Sports</title>
+  <title>GS-Brand -A Name of Brand</title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;900&display=swap"
     rel="stylesheet" />
@@ -23,7 +24,10 @@
             object-fit: cover;
             display: block;
           " />
-      GS BRAND
+      <div style="display: flex; flex-direction: column; line-height: 1;">
+        <span style="font-weight: bold; letter-spacing: 1px;"><span style="color: #c62828;">GS</span> BRAND</span>
+        <span style="font-size: 0.5em; letter-spacing: 2px;">A NAME OF BRAND</span>
+      </div>
     </div>
     <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"
       onclick="toggleNavMenu()">
@@ -55,7 +59,7 @@
       <div class="hero-bg"></div>
       <div class="hero-pattern"></div>
       <div class="hero-content">
-        <div class="hero-badge fade-up">New Collection 2025</div>
+        <div class="hero-badge fade-up">New Collection 2026</div>
         <h1 class="hero-title fade-up-2">
           ELEVATE<br />YOUR <span>GAME</span>
         </h1>
@@ -122,7 +126,7 @@
         <div class="stat-label">Products</div>
       </div>
       <div class="stat">
-        <div class="stat-num">9</div>
+        <div class="stat-num">36+</div>
         <div class="stat-label">Years Strong</div>
       </div>
     </div>
@@ -136,9 +140,9 @@
             Built For Champions,<br />Worn By Everyone
           </h2>
           <p class="about-copy about-copy-mb-20">
-            Founded in 2017, GS-Brand emerged from India's vibrant sports
-            culture. We believe every athlete — from streets to stadiums —
-            deserves elite gear without compromise.
+            Serving athletes with passion and performance for decades, GS-Brand has been part of the sports journey
+            since 1990. From local playgrounds to professional arenas, we deliver quality sports gear designed to
+            inspire confidence, endurance, and excellence in every game.
           </p>
           <p class="about-copy about-copy-mb-32">
             From cricket grounds to gym floors, our products are engineered to
@@ -203,7 +207,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2025 GS-Brand Sports. All rights reserved.</span>
+        <span>© 2025 GS-Brand -A Name of Brand. All rights reserved.</span>
         <span>Made with ❤️ in India</span>
       </div>
     </div>
@@ -245,6 +249,9 @@
           <label>Password</label><input type="password" id="login-password" placeholder="••••••••" />
         </div>
         <div id="login-error" class="text-red fs-13 mb-12 hidden"></div>
+        <div class="forgot-password-row">
+          <a href="#" class="forgot-password-link" onclick="forgotPassword(); return false;">Forgot Password?</a>
+        </div>
         <button class="btn btn-gold btn-full btn-pad-14" onclick="doLogin()">
           Sign In
         </button>

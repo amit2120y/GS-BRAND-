@@ -2,6 +2,7 @@ import {
   doLogin as _doLogin,
   doGoogleLogin as _doGoogleLogin,
   doRegister as _doRegister,
+  forgotPassword as _forgotPassword,
   logout as _logout,
   getUserProfile,
   onAuthStateChanged,
@@ -25,12 +26,29 @@ import {
 import imageCompression from "https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/+esm";
 
 const PRODUCT_IMGS = {
-  Footwear: ["images/shoe1.jpg", "images/shoe2.jpg", "images/shoe3.jpg", "images/shoe4.jpg"],
-  "Cricket Products": ["images/bat1.jpg", "images/bat2.jpg", "images/jersy1.jpg"],
-  "Football Products": ["images/shoe1.jpg", "images/shoe2.jpg", "images/shoe3.jpg"],
+  Footwear: [
+    "images/shoe1.jpg",
+    "images/shoe2.jpg",
+    "images/shoe3.jpg",
+    "images/shoe4.jpg",
+  ],
+  "Cricket Products": [
+    "images/bat1.jpg",
+    "images/bat2.jpg",
+    "images/jersy1.jpg",
+  ],
+  "Football Products": [
+    "images/shoe1.jpg",
+    "images/shoe2.jpg",
+    "images/shoe3.jpg",
+  ],
   Basketball: ["images/image1.jpg", "images/shoe4.jpg", "images/shoe2.jpg"],
   Badminton: ["images/shoe4.jpg", "images/jersy1.jpg", "images/cup1.jpg"],
-  "Indoor Game Products": ["images/cup1.jpg", "images/image1.jpg", "images/shoe1.jpg"],
+  "Indoor Game Products": [
+    "images/cup1.jpg",
+    "images/image1.jpg",
+    "images/shoe1.jpg",
+  ],
   Jersey: ["images/jersy1.jpg", "images/image1.jpg", "images/shoe2.jpg"],
   Trophy: ["images/cup1.jpg", "images/bat2.jpg", "images/shoe3.jpg"],
 };
@@ -202,7 +220,10 @@ function fmtDate(d) {
 function toggleNavMenu(forceOpen) {
   const nav = document.getElementById("main-nav");
   if (!nav) return;
-  const nextState = typeof forceOpen === "boolean" ? forceOpen : !nav.classList.contains("nav-open");
+  const nextState =
+    typeof forceOpen === "boolean"
+      ? forceOpen
+      : !nav.classList.contains("nav-open");
   nav.classList.toggle("nav-open", nextState);
   const toggle = nav.querySelector(".nav-toggle");
   if (toggle) toggle.setAttribute("aria-expanded", String(nextState));
@@ -215,7 +236,8 @@ function setupNavMenu() {
   document.addEventListener("click", (event) => {
     if (!nav.classList.contains("nav-open")) return;
     const toggle = nav.querySelector(".nav-toggle");
-    if (toggle && (toggle === event.target || toggle.contains(event.target))) return;
+    if (toggle && (toggle === event.target || toggle.contains(event.target)))
+      return;
     const links = nav.querySelector(".nav-links");
     if (links && links.contains(event.target)) {
       nav.classList.remove("nav-open");
@@ -376,7 +398,8 @@ async function doRegister() {
       if (phoneEl) phoneEl.value = "";
       if (addrEl) addrEl.value = "";
       const loginBtn = document.querySelector(".mtab");
-      if (typeof switchAuthTab === "function" && loginBtn) switchAuthTab("login", loginBtn);
+      if (typeof switchAuthTab === "function" && loginBtn)
+        switchAuthTab("login", loginBtn);
       toast("Verification email sent — check your inbox before signing in.");
     }
   } catch (e) {
@@ -386,6 +409,9 @@ async function doRegister() {
     }
     console.error("Register wrapper error:", e);
   }
+}
+async function forgotPassword() {
+  await _forgotPassword(toast);
 }
 async function logout() {
   currentUser = null;
@@ -423,7 +449,8 @@ async function saveProfile() {
     return;
   }
   try {
-    const { doc, updateDoc, firedb } = await import("../server/firebase-config.js");
+    const { doc, updateDoc, firedb } =
+      await import("../server/firebase-config.js");
     const payload = { name };
     if (typeof phone !== "undefined") payload.phone = phone;
     if (typeof address !== "undefined") payload.address = address;
@@ -584,7 +611,12 @@ function renderAdminDashboard() {
           </div>
         </div>
         <div class="admin-order-row"><span>Total</span><strong>${fmt(o.total)}</strong></div>
-        <div class="admin-order-row"><span>Status</span><span class="badge ${o.status === "Delivered" ? "badge-green" : o.status === "Processing" ? "badge-gold" : "badge-muted"}">${o.status}</span></div>
+        <div class="admin-order-row"><span>Status</span><span class="badge ${o.status === "Delivered" ? "badge-green" : o.status === "Processing" || o.status === "Out for Delivery" ? "badge-gold" : "badge-muted"}">${o.status}</span></div>
+        <div class="admin-order-row"><span>Actions</span>
+          <span class="admin-order-actions">
+            <button class="btn btn-outline btn-sm" onclick="openOrderDetails('${o.id}')">View Details</button>
+          </span>
+        </div>
       </div>
     `;
       })
@@ -616,13 +648,12 @@ function renderAdminProducts() {
 }
 
 function renderAdminOrders() {
-  document.getElementById("admin-orders-table").innerHTML =
-    db.orders.length
-      ? db.orders
-        .map((o) => {
-          const p = db.products.find((x) => x.id === o.productId) || {};
-          const img = p.img || PRODUCT_IMGS[p.category]?.[0] || "";
-          return `
+  document.getElementById("admin-orders-table").innerHTML = db.orders.length
+    ? db.orders
+      .map((o) => {
+        const p = db.products.find((x) => x.id === o.productId) || {};
+        const img = p.img || PRODUCT_IMGS[p.category]?.[0] || "";
+        return `
       <div class="admin-order-card">
         <div class="admin-order-header">
           <div class="admin-order-img" style="background-image:url('${img}')"></div>
@@ -636,19 +667,20 @@ function renderAdminOrders() {
         <div class="admin-order-row"><span>Status</span><span class="badge ${o.status === "Delivered" ? "badge-green" : o.status === "Processing" ? "badge-gold" : "badge-muted"}">${o.status}</span></div>
         <div class="admin-order-row"><span>Actions</span>
           <span class="admin-order-actions">
+            <button class="btn btn-outline btn-sm" onclick="openOrderDetails('${o.id}')">View Details</button>
             <select onchange="updateOrderStatus('${o.id}',this.value)">
               <option ${o.status === "Processing" ? "selected" : ""}>Processing</option>
               <option ${o.status === "Shipped" ? "selected" : ""}>Shipped</option>
-              <option ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
+              <option ${o.status === "Out for Delivery" ? "selected" : ""}>Out for Delivery</option>
               <option ${o.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
             </select>
           </span>
         </div>
       </div>
     `;
-        })
-        .join("")
-      : '<div class="admin-orders-empty">No orders yet</div>';
+      })
+      .join("")
+    : '<div class="admin-orders-empty">No orders yet</div>';
 }
 
 async function updateOrderStatus(id, status) {
@@ -821,7 +853,8 @@ async function saveProduct() {
   err.classList.add("hidden");
 
   const saveBtn = document.querySelector("#product-modal .btn-gold");
-  const fallbackImg = PRODUCT_IMGS[cat]?.[0] || PRODUCT_IMGS.Footwear?.[0] || "images/image1.jpg";
+  const fallbackImg =
+    PRODUCT_IMGS[cat]?.[0] || PRODUCT_IMGS.Footwear?.[0] || "images/image1.jpg";
   let img = window._currentProductImg || fallbackImg;
 
   // Compress and Upload to Cloudinary if new file selected
@@ -1001,13 +1034,12 @@ function renderCart() {
     })
     .join("");
   const shipping = subtotal > 999 ? 0 : 99;
-  const gst = Math.round(subtotal * 0.18);
-  const total = subtotal + shipping + gst;
+  const total = subtotal + shipping;
   summaryEl.innerHTML = `
     <div class="order-row"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
-    <div class="order-row"><span>GST (18%)</span><span>${fmt(gst)}</span></div>
     <div class="order-row"><span>Shipping</span><span>${shipping === 0 ? '<span class="text-green">FREE</span>' : fmt(shipping)}</span></div>
-    <div class="order-total"><span>Total</span><span class="text-gold">${fmt(total)}</span></div>
+    <div class="order-total"><span>Total</span><span class="text-gold">${fmt(total)}</span></div><br>
+    <div style="font-size:12px;color:var(--muted);text-align:right;margin-top:-8px;margin-bottom:16px">(GST included)</div>
     ${subtotal < 999 ? '<div style="font-size:11px;color:var(--muted);margin-top:8px">Add ₹' + fmt(999 - subtotal) + " more for free shipping</div>" : ""}
   `;
 }
@@ -1036,6 +1068,16 @@ async function removeFromCart(productId) {
 async function checkout() {
   const cart = getCart();
   if (!cart.length) return;
+
+  // Ensure user has provided a phone number and an address
+  if (!currentUser.phone || !currentUser.address) {
+    toast("Please add your phone number and address before placing an order.");
+    // Open the Profile section for editing
+    userTab("profile", null);
+    toggleProfileEdit();
+    return;
+  }
+
   for (const item of cart) {
     const p = db.products.find((p) => p.id === item.productId);
     if (!p) continue;
@@ -1046,7 +1088,10 @@ async function checkout() {
       productId: p.id,
       productName: p.name,
       qty: item.qty,
+      price: total,
       total,
+      phone: currentUser.phone,
+      address: currentUser.address,
       status: "Processing",
       date: new Date().toISOString().split("T")[0],
     };
@@ -1079,12 +1124,19 @@ function renderUserOrders() {
     .slice()
     .reverse()
     .map((o) => {
-      const p = db.products.find((x) => x.id === o.productId) || { name: o.productName, category: "", img: "" };
+      const p = db.products.find((x) => x.id === o.productId) || {
+        name: o.productName,
+        category: "",
+        img: "",
+      };
       const img = p.img || PRODUCT_IMGS[p.category]?.[0] || "";
       const reviewed = !!o.reviewed;
-      const actionBtn = o.status !== "Delivered"
-        ? `<button class="btn btn-gold btn-sm" onclick="confirmDelivery('${o.id}')">Is Delivered</button>`
-        : (reviewed ? `<button class="btn btn-outline btn-sm" disabled>Reviewed</button>` : `<button class="btn btn-gold btn-sm" onclick="openReviewModal('${o.id}')">Review & Feedback</button>`);
+      const actionBtn =
+        o.status !== "Delivered"
+          ? `<button class="btn btn-gold btn-sm" onclick="confirmDelivery('${o.id}')">Is Delivered</button>`
+          : reviewed
+            ? `<button class="btn btn-outline btn-sm" disabled>Reviewed</button>`
+            : `<button class="btn btn-gold btn-sm" onclick="openReviewModal('${o.id}')">Review & Feedback</button>`;
       return `
       <div class="product-card order-card">
         <div class="product-img" style="background-image:url('${img}')"></div>
@@ -1097,7 +1149,7 @@ function renderUserOrders() {
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
             <div style="font-size:12px;color:var(--muted)">${fmtDate(o.date)}</div>
-            <div><span class="badge ${o.status === "Delivered" ? "badge-green" : o.status === "Processing" ? "badge-gold" : "badge-muted"}">${o.status}</span></div>
+            <div><span class="badge ${o.status === "Delivered" ? "badge-green" : o.status === "Processing" || o.status === "Out for Delivery" ? "badge-gold" : "badge-muted"}">${o.status}</span></div>
           </div>
           <div class="order-actions">
             ${actionBtn}
@@ -1154,22 +1206,37 @@ function renderUserRequestsList() {
 }
 
 // ===== ORDER DETAILS + REVIEW HANDLERS =====
-function openOrderDetails(id) {
+async function openOrderDetails(id) {
   const o = db.orders.find((x) => x.id === id);
   if (!o) return;
-  const p = db.products.find((x) => x.id === o.productId) || { name: o.productName, img: "" };
+  const p = db.products.find((x) => x.id === o.productId) || {
+    name: o.productName,
+    img: "",
+  };
+  let customer = null;
+  try {
+    customer = await getUserProfile(o.userId);
+  } catch (e) {
+    console.error("Failed to load customer profile:", e);
+  }
   const container = document.getElementById("order-details-content");
   if (!container) return;
   container.innerHTML = `
     <div style="display:flex;gap:16px;align-items:flex-start">
-      <img src="${p.img || ''}" alt="${p.name}" />
+      <img src="${p.img || ""}" alt="${p.name}" />
       <div style="flex:1">
         <div class="order-detail-row"><div style="font-weight:700">${p.name}</div></div>
         <div class="order-detail-row"><div>Qty: <strong>${o.qty}</strong></div><div>Total: <strong class="text-gold">${fmt(o.total)}</strong></div></div>
         <div class="order-detail-row"><div>Date: ${fmtDate(o.date)}</div></div>
-        <div class="order-detail-row"><div>Status: <span class="badge ${o.status === 'Delivered' ? 'badge-green' : o.status === 'Processing' ? 'badge-gold' : 'badge-muted'}">${o.status}</span></div></div>
+        <div class="order-detail-row"><div>Status: <span class="badge ${o.status === "Delivered" ? "badge-green" : o.status === "Processing" || o.status === "Out for Delivery" ? "badge-gold" : "badge-muted"}">${o.status}</span></div></div>
       </div>
     </div>
+    <div class="order-detail-row"><div style="font-weight:700">Customer Details</div></div>
+    <div class="order-detail-row"><div>Name: <strong>${o.userName || customer?.name || "Unknown"}</strong></div></div>
+    <div class="order-detail-row"><div>Email: <strong>${customer?.email || "Not provided"}</strong></div></div>
+    <div class="order-detail-row"><div>Phone: <strong>${customer?.phone || "Not provided"}</strong></div></div>
+    <div class="order-detail-row"><div>Address: <strong>${customer?.address || "Not provided"}</strong></div></div>
+    <div class="order-detail-row"><div>Order ID: <strong>${o.id}</strong></div></div>
   `;
   document.getElementById("order-details-modal").classList.add("open");
 }
@@ -1217,7 +1284,7 @@ function closeReviewModal() {
 
 function setReviewRating(val) {
   window._currentReviewRating = Number(val) || 0;
-  const stars = document.querySelectorAll('#review-stars .star');
+  const stars = document.querySelectorAll("#review-stars .star");
   stars.forEach((s) => {
     const v = Number(s.dataset.value);
     if (window._currentReviewRating && v <= window._currentReviewRating) {
@@ -1231,8 +1298,9 @@ function setReviewRating(val) {
     }
   });
   // Remove missing hint when a rating is selected
-  const starsWrap = document.getElementById('review-stars');
-  if (starsWrap && window._currentReviewRating > 0) starsWrap.classList.remove('missing');
+  const starsWrap = document.getElementById("review-stars");
+  if (starsWrap && window._currentReviewRating > 0)
+    starsWrap.classList.remove("missing");
 }
 
 function submitReview() {
@@ -1252,9 +1320,9 @@ function submitReview() {
     return;
   }
   if (!rating || rating === 0) {
-    const starsWrap = document.getElementById('review-stars');
-    if (starsWrap) starsWrap.classList.add('missing');
-    toast('Please give a star rating');
+    const starsWrap = document.getElementById("review-stars");
+    if (starsWrap) starsWrap.classList.add("missing");
+    toast("Please give a star rating");
     return;
   }
 
@@ -1411,6 +1479,7 @@ Object.assign(window, {
   doLogin,
   doGoogleLogin,
   doRegister,
+  forgotPassword,
   logout,
   updateNav,
   renderHomeProducts,

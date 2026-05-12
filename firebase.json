@@ -20,5 +20,8 @@
   },
   "firestore": {
     "rules": "server/firestore.rules"
+  },
+  "functions": {
+    "source": "functions"
   }
 }
